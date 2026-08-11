@@ -1,46 +1,39 @@
-# Angular Universal Starter
+# Fitts Law Test
 
-![Angular Universal](https://angular.io/assets/images/logos/concept-icons/universal.png)
+A browser-based Fitts' law pointing task that records participant results to Google Sheets and can be published as a static GitHub Pages site.
 
-A minimal Angular starter for Universal JavaScript using the [Angular CLI](https://github.com/angular/angular-cli)
-If you're looking for the Angular Universal repo go to [**angular/universal**](https://github.com/angular/universal)  
+## Local Development
 
-## Getting Started
+Install dependencies:
 
-This demo is built following the [Angular-CLI Wiki guide](https://github.com/angular/angular-cli/wiki/stories-universal-rendering)
+```bash
+yarn
+```
 
-We're utilizing packages from the [Angular Universal @nguniversal](https://github.com/angular/universal) repo, such as [ng-module-map-ngfactory-loader](https://github.com/angular/universal/modules/module-map-ngfactory-loader) to enable Lazy Loading.
+Run the app locally:
 
----
+```bash
+yarn start
+```
 
-### Build Time Prerendering Vs. Server Side Rendering(ssr)
-This repo demonstrates the use of 2 different forms of Server Side Rendering.
+Build the GitHub Pages version:
 
-**Prerender** 
-* Happens at build time
-* Renders your application and replaces the dist index.html with a version rendered at the route `/`.
+```bash
+yarn build:pages
+```
 
-**Server-Side Rendering(ssr)**
-* Happens at runtime
-* Uses `ngExpressEngine` to render your application on the fly at the requested url.
+The built site is written to `docs/`. Configure GitHub Pages to serve the `main` branch from `/docs`.
 
----
+## Google Sheets Configuration
 
-### Installation
-* `npm install` or `yarn`
+The deployed app currently keeps the Google API key, OAuth client ID, and Sheet ID in public browser code.
 
-### Development (Client-side only rendering)
-* run `npm run start` which will start `ng serve`
+To use another Google Sheet:
 
-### Production (also for testing SSR/Pre-rendering locally)
-**`npm run build:ssr && npm run serve:ssr`** - Compiles your application and spins up a Node Express to serve your Universal application on `http://localhost:4000`.
+1. Create a sheet with these tabs: `Runs`, `RunAverages`, and `UserAverages`.
+2. Update every `spreadsheetId` in `src/app/app.service.ts`.
+3. Update the helper `spreadsheetId` in `src/index.html`.
+4. If changing Google credentials, update `CLIENT_ID` and `API_KEY` in `src/index.html`.
+5. Run `yarn build:pages` and commit the updated `docs/` files.
 
-**`npm run build:prerender && npm run serve:prerender`** - Compiles your application and prerenders your applications files, spinning up a demo http-server so you can view it on `http://localhost:8080`
-**Note**: To deploy your static site to a static hosting platform you will have to deploy the `dist/browser` folder, rather than the usual `dist`
-
-
-## Universal "Gotchas"
-Moved to [/angular/universal/blob/master/docs/gotchas.md](https://github.com/angular/universal/blob/master/docs/gotchas.md)
-
-# License
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/LICENSE)
+If you need to patch production before a rebuild works, make the same credential and Sheet ID edits in `docs/index.html`.
